@@ -21,6 +21,16 @@ def playScale():
   for i in range(60, 72):
     playNote(i, dur, intensity)
     
+def playScaleTwo():
+  intensity = 40
+  dur = 100
+  for i in range(44, 49):
+    playNote(i, dur, intensity)
+    
+def scales():
+  playScaleTwo()
+  playScale()
+    
 def increaseVolume(sound):
   for sample in getSamples(sound):
     value = getSampleValue(sample)
@@ -38,6 +48,7 @@ def setVariables():
   print length
   
 def sineWave():
+  # I want setVariables to be called into this as a class or def but can't get it to take the values
   
   freq = requestInteger("What frequency should the first sound be?")
   print freq
@@ -95,7 +106,7 @@ def sineWave2(freq, amplitude, length):
   play(buildSin)
     
 def musicSine():
-  
+  #I want to not have to define the variables here but allow setVariables set the values and then name the sound to add
   first_sound = sineWave2(440, 4000, 4)
   second_sound = sineWave2(140, 4900, 4)
   
