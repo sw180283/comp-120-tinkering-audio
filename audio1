@@ -25,23 +25,79 @@ def increaseVolume(sound):
   for sample in getSamples(sound):
     value = getSampleValue(sample)
     setSampleValue(sample, value *2)
-    
+
+def setVariables():
+  #welcome message
+  freq = requestInteger("What frequency should the first sound be?")
+  print freq
+  
+  amplitude = requestInteger("What amplitude should the first should have?")
+  print amplitude
+  
+  length = requestInteger("What should the length in seconds be?")
+  print length
+  
 def sineWave():
-  freq=550
-  amplitude=1400
-  secs=4
   
-  buildSin=makeEmptySoundBySeconds(secs)
+  freq = requestInteger("What frequency should the first sound be?")
+  print freq
   
-  sr = getSamplingRate(buildSin)
+  amplitude = requestInteger("What amplitude should the first should have?")
+  print amplitude
   
+  length = requestInteger("What should the length in seconds be?")
+  print length
+  
+  #set the variables
+  #freq=440
+  #amplitude=4400
+  #secs=4
+  
+  #create blank sound
+  buildSin = makeEmptySoundBySeconds(length)
+  
+  #set the constant of sampling
+  samplingRate = getSamplingRate(buildSin)
   interval=1.0/freq
-  samplesPerCycle=interval * sr
+  samplesPerCycle=interval * samplingRate
   maxCycle=2*pi
   
-  for pos in range (0, getLength(buildSin)):
-    rawSample=sin((pos/samplesPerCycle)*maxCycle)
-    sampleVal=int(amplitude*rawSample)
-    setSampleValueAt(buildSin,pos,sampleVal)
+  #generate the sound
+  for pos in range (getLength(buildSin)):
+    rawSample = sin((pos / samplesPerCycle) * maxCycle)
+    sampleVal = int(amplitude * rawSample)
+    setSampleValueAt(buildSin, pos, sampleVal)
+  
+  play(buildSin)
+  
+def sineWave2(freq, amplitude, length):
+  
+  #set the variables
+  #freq=440
+  #amplitude=4400
+  #secs=4
+  
+  #create blank sound
+  buildSin = makeEmptySoundBySeconds(length)
+  
+  #set the constant of sampling
+  samplingRate = getSamplingRate(buildSin)
+  interval=1.0/freq
+  samplesPerCycle=interval * samplingRate
+  maxCycle=2*pi
+  
+  #generate the sound
+  for pos in range (getLength(buildSin)):
+    rawSample = sin((pos / samplesPerCycle) * maxCycle)
+    sampleVal = int(amplitude * rawSample)
+    setSampleValueAt(buildSin, pos, sampleVal)
     
-  return buildSin
+  play(buildSin)
+    
+def musicSine():
+  
+  first_sound = sineWave2(440, 4000, 4)
+  second_sound = sineWave2(140, 4900, 4)
+  
+  addSoundInto(second_sound, first_sound)
+  play(first_sound)
