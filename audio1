@@ -9,6 +9,17 @@ def Play():
   
   print getSampleValueAt(sound, 1)
   print getSampleValueAt(sound, 2)
+  
+def echo():
+  #play echo
+  delay=100
+  s1 = makeSound(r"X:\Audio\UpbeatFunk.wav")
+  s2 = makeSound(r"X:\Audio\UpbeatFunk.wav")
+  for index in range(delay, getLength(s1)):
+    echo = 0.6 * getSampleValueAt(s2, index-delay)
+    combo = getSampleValueAt(s1, index, combo)
+  play(s1)
+  return s1
 
 def playTwice():
   #play sound twice
