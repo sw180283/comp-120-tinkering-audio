@@ -1,0 +1,238 @@
+#play the sound of a file from set location
+setMediaPath()
+sound=makeSound("Airhorn.wav")
+soundLength=getLength(sound)
+
+def playSound():
+  print sound
+  blockingPlay(sound)
+  
+#TONE GENERATION
+def sineWave2(freq, amplitude, length):
+  
+  #set the variables
+  #freq=440
+  #amplitude=4400
+  #secs=4
+  
+  #create blank sound
+  buildSin = makeEmptySoundBySeconds(length)
+  
+  #set the constant of sampling
+  samplingRate = getSamplingRate(buildSin)
+  interval=1.0/freq
+  samplesPerCycle=interval * samplingRate
+  maxCycle=2*pi
+  
+  #generate the sound
+  for pos in range (getLength(buildSin)):
+    rawSample = sin((pos / samplesPerCycle) * maxCycle)
+    sampleVal = int(amplitude * rawSample)
+    setSampleValueAt(buildSin, pos, sampleVal)
+    
+  play(buildSin)
+
+#REVERSE      
+def reverse():
+  explore(sound)
+  target=makeEmptySound(getLength(sound))
+  sourceIndex = getLength(sound)-1
+  for targetIndex in range(0, getLength(target)):
+    sourceValue = getSampleValueAt(sound, sourceIndex)
+    setSampleValueAt(target, targetIndex, sourceValue)
+    sourceIndex = sourceIndex - 1
+  explore(target)
+  
+#MIRROR
+def mirrorSound():
+  explore(sound)
+  soundLength = getLength(sound)
+  mirrorPoint = soundLength/2
+  for index in range(0, mirrorPoint):
+    left = getSampleObjectAt(sound, index)
+    right = getSampleObjectAt(sound, soundLength - index - 1)
+    value = getSampleValue(left)
+    setSampleValue(right, value)
+  explore(sound)
+
+#play at a different rate (1=normal), (2=fast), (0.5=slow)    
+def playRate(rate):
+  playAtRate(sound, rate)
+  
+#this compares the sound wave of the original sound with whatever "sound" is0  
+def compareOriginal():
+  sOriginal=makeSound("Airhorn.wav")
+  explore(sOriginal)
+  explore(sound)  
+  
+#increase the volume by doubling the sample value  
+def increaseVolume():
+  for sample in getSamples(sound):
+    value = getSampleValue(sample)
+    setSampleValue(sample, value * 2)
+
+#decrease the volume by doubling the sample value        
+def decreaseVolume():
+  for sample in getSamples(sound):
+    value = getSampleValue(sample)
+    setSampleValue(sample, value * 0.5)
+
+#the volume change is dependent on factor      
+def changeVolume(factor):
+  for sample in getSample(sound):
+    value = getSampleValue(sample)
+    setSampleValue(sample, value * factor)
+    
+#find the multiplier that makes the largest sample equal the loudest possible amplitude    
+def normalise():
+  largest = 0
+  for sample in getSamples(sound):
+    largest = max(largest, getSampleValue(sample))
+  multiplier = 32767.0 / largest
+  print "Largest sample value in original sound was", largest
+  print "Multiplier is", multiplier
+    
+  for sample in getSamples(sound):
+    louder = multiplier * getSampleValue(sample)
+    setSampleValue(sample, louder)
+
+#make amplitude max value
+def onlyMaximise():
+  for sample in getSamples(sound):
+    value = getSampleValue(sample)
+    if value >= 0:
+      setSampleValue(sample, 32767)
+    if value < 0:
+      setSampleValue(sample, -32767)
+      
+def merge():
+  bikeHorn = makeSound("Bikehorn.wav")
+  bikeLength = getLength(bikeHorn)
+  airHorn = makeSound("Airhorn.wav")
+  airLength = getLength(airHorn)
+  print "The length of the bike horn sound is", bikeLength
+  print "The length of the air horn sound is", airLength
+  
+  target = makeEmptySoundBySeconds(9)
+  index = 0
+  
+  #copy in the airhorn sound into the empty target
+  for source in range(0, airLength):
+    value = getSampleValueAt(airHorn, source)
+    setSampleValueAt(target, index, value)
+    index = index + 1
+
+  #copy in 0.1 second pause     
+  for source in range(0, int(0.1 * getSamplingRate(target))):
+    setSampleValueAt(target, index, 0)
+    index += 1
+    
+  #copy in the bikehorn sound into the empty target     
+  for source in range(0, bikeLength):
+    value = getSampleValueAt(bikeHorn, source)
+    setSampleValueAt(target, index, value)
+    index = index + 1
+  play(target)
+  return target
+
+#splice different parts of the sound together        
+def splice():
+  bikeHorn = makeSound("Bikehorn.wav")  
+  target = makeEmptySoundBySeconds(9)  
+  targetIndex = 0
+  
+  for sourceIndex in range(4000, 14000):
+    value = getSampleValueAt(bikeHorn, sourceIndex)
+    setSampleValueAt(target, targetIndex, value)
+    targetIndex = targetIndex + 1
+    
+  for sourceIndex in range(14000, 24000):
+    value = getSampleValueAt(bikeHorn, sourceIndex)
+    setSampleValueAt(target, targetIndex, value)
+    targetIndex = targetIndex + 1
+    
+  for index in range(0, 1000):
+    setSampleValueAt(target, targetIndex, 0)
+    targetIndex = targetIndex + 1  
+    
+  play(target)
+  print "Did it play?"
+  return target
+
+#splice 1/2 of sound1 with 1/2 of sound2       
+def spliceSounds(sound1, sound2): 
+  target = makeEmptySoundBySeconds(9)  
+  targetIndex = 0
+  
+  for sourceIndex in range(0, getLength(sound1)/2):
+    value = getSampleValueAt(sound1, sourceIndex)
+    setSampleValueAt(target, targetIndex, value)
+    targetIndex = targetIndex + 1
+    
+  for sourceIndex in range(getLength(sound2)/2, getLength(sound2)):
+    value = getSampleValueAt(sound2, sourceIndex)
+    setSampleValueAt(target, targetIndex, value)
+    targetIndex = targetIndex + 1
+    
+  for index in range(0, 1000):
+    setSampleValueAt(target, targetIndex, 0)
+    targetIndex = targetIndex + 1  
+    
+  play(target)
+  print "Did it play?"
+  return target
+
+#why does the pitch go up?
+def clipSound():
+  bikeHorn=makeSound("Bikehorn.wav")
+  bikeLength=getLength(bikeHorn)
+  explore(bikeHorn)    
+  def clip(bikeHorn):
+  
+    start=4000
+    end= 14000
+    print "The start is", start
+    print "The end is", end
+    target = makeEmptySound(end - start)
+    targetIndex = 0
+  
+    for sourceIndex in range(start, end):
+      sourceValue=getSampleValueAt(bikeHorn, sourceIndex)
+      setSampleValueAt(target, targetIndex, sourceValue)
+      targetIndex = targetIndex + 1
+    return target
+  bikeClip=clip(bikeHorn)
+  explore(bikeClip)
+
+#copy the sound into an empty sound
+def copy():
+  bikeHorn=makeSound("Bikehorn.wav")
+  bikeLength=getLength(bikeHorn)  
+  target=makeEmptySoundBySeconds(9)
+  #start point of the target to copy new sound into
+  start=4000
+  
+  targetIndex=start
+  for sourceIndex in range(0, getLength(bikeHorn)):
+    sourceValue=getSampleValueAt(bikeHorn, sourceIndex)
+    setSampleValueAt(target, targetIndex, sourceValue)
+    targetIndex=targetIndex+1
+  play(target)
+  print "Did it play?"  
+  explore(target)
+
+#request file name and save location and save sound                
+def writeSound(sound):
+  folder = setMediaPath()
+  fileName = requestString("What do you want to name the file? Do not include the following characters: \ / : * < > ? | ")
+
+  saveFile = folder+fileName+".wav"
+  #print saveFile
+  writeSoundTo(sound, saveFile)
+  print "Sound was saved as: ", fileName, " in this location:", saveFile
+  
+#play the sound of a file from set location
+def test():
+  setMediaPath()
+  sound=makeSound("Airhorn.wav")
+  print sound
