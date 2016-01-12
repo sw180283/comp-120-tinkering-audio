@@ -18,5 +18,5 @@ Random audio generation
 
 ##To do:
 Audio envelopes and echoes  
-Parsing tokens into audio 
+Parsing tokens into audio  
 Combine  
