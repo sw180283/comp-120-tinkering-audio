@@ -18,3 +18,4 @@ Audio envelopes and echoes
 Parsing tokens into audio  
 Random audio generation  
 Combine 
+Make gameplay audio out
