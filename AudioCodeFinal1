@@ -1,57 +1,22 @@
+#time for parsingTokens
+import time
+
 #find the sound folder
 setMediaPath()
 sound=makeSound("Airhorn.wav")
 soundLength=getLength(sound)
 
-def playSound():
-  print sound
-  blockingPlay(sound)
-
-
+#lists for parsing tokens
 notesCombined = [] 
 melody = []
 notesMelody = []
-  
-#Parsing
-def parse():
-
-  notes = "C3, C#3, D3, D#3, E3, F3, F#3, G3, G#3, A4, A#4, B4, B#4"  
-  notesRequest = requestString("Enter in notes from " + notes)   
-  notesSplit = notes.split(",")
-  print "The split notes are", notesSplit
-  
-  noteNumber = "-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3"
-  noteNumberSplit = noteNumber.split(",")
-  print "The split numbers are", noteNumberSplit
-  
-  notesRequestSplit = notesRequest.split(",")
-  print "The requested notes are", notesRequestSplit
-  
-  for note_number in range(-9, -8):
-    for chars in ["C3", "C#3", "D3", "D#3", "E3", "F3", "F#3", "G3", "G#3", "A4", "A#4", "B4", "B#4"]:
-      notesCombined.append((note_number,chars))
-      note_number += 1
-  print "The combined notes are", notesCombined
-  
-  for note_number in range(-9, -8):
-    for chars in notesRequestSplit:
-      notesMelody.append((note_number,chars))
-      note_number += 1
-  print "The melody notes are", notesMelody
-          
-  for i in notesCombined:
-    for request in notesRequestSplit:
-      if request in i:
-        return noteNumber
-        melody.append(noteNumber)
-
-  print "The melody frequencies are", melody
-     
-  
-  #frequency = 440.0 * 2.0 ** (note_number / 12.0)
-
-melody = []
 newParse = []  
+
+#global location for build Sine wave for parsingToken and sineWav  
+length=1
+buildSin = makeEmptySoundBySeconds(length)
+
+#PARSING TOKEN WRITE SONG 5
 def parseToken():
 
   noteDictionary = {"C3": -9, "C#3": -8, "D3": -7, "D#3":-6, "E3": -5, "F3":-4, "F#3":-3, "G3":-2, "G#3":-1, "A4":0, "A#4":1, "B4":2, "B#4":3}
@@ -61,6 +26,9 @@ def parseToken():
   notesRequest = requestString("Enter in notes from " + notes) 
   melody = notesRequest.split(",")
   melodyLength = len(melody)
+  
+  targetMelody = makeEmptySoundBySeconds(melodyLength)
+
   print "The melody notes are", melody
   print "The melody length is", melodyLength
   
@@ -71,23 +39,23 @@ def parseToken():
         
     note_number = noteDictionary.get(newNote)
     print "What is the note_number?", note_number
-    #frequency = 440.0 * 2.0 ** (note_number / 12.0)
-    #print "The frequency for ", newNote, " is ", note_number
+    frequency = 440.0 * 2.0 ** (note_number / 12.0)
+    print "The frequency for ", newNote, " is ", note_number
     newParse.append(note_number)
-    #newMelody = sineWave(frequency, 4000, 4)
     print "This is the list of frequencies", newParse
+    newMelody = sineWave(frequency, 4000, 1)
     
-    #for notes, note_number in noteDictionary.items():
-      #print "What is this note?", notes
-      #print "What is this note_number?", note_number
-      #if newNote == notes:
-        #print "The note number for ", note_number
-        #frequency = 440.0 * 2.0 ** (note_number / 12.0)
-        #print "The frequency for ", notes, " is ", frequency
-        #newParse.append(frequency)
-        #get frequency, 4000 amplitude, 4 seconds
-        #newMelody = sineWave(frequency, 4000, 4)
-        #print "This is the list of frequencies", newParse 
+    #start point of the target to copy new sound into
+    lengthMelody = getLength(buildSin)
+    start = (lengthMelody * (i + 1))- lengthMelody
+    print "The length of buildSin is", lengthMelody
+    copy(targetMelody, buildSin, start)
+    
+    time.sleep(0.9)
+    
+  explore(targetMelody)
+  writeSound(targetMelody)
+         
 
 #TONE GENERATION 1
 def sineWave(freq, amplitude, length):
@@ -98,7 +66,7 @@ def sineWave(freq, amplitude, length):
   #secs=4
   
   #create blank sound
-  buildSin = makeEmptySoundBySeconds(length)
+  #buildSin = makeEmptySoundBySeconds(length)
   
   #set the constant of sampling
   samplingRate = getSamplingRate(buildSin)
@@ -234,7 +202,7 @@ def echoNumber(delay, sound, number):
   play(sound)
   return sound
  
-#echo feedback or envelope
+#ECHO FEEDBACK
 def echoFeedback(sound):
   delay = 4000
   soundSamples = getSamples(sound)
@@ -253,10 +221,16 @@ def randomNote():
   note = random.randint(44, 99)
   playNote(note, dur, intensity)
   
-#adding sounds together alternative
-#use tone generation
+###############################################################################################################
 
-#not working not sound
+#ADDITIONAL FUNCTIONS
+
+#play sound
+def playSound():
+  print sound
+  blockingPlay(sound)
+  
+#adding sounds together alternative
 def addSounds(sound, secondSound):
   for index in range(0, getLength(sound)):
     soundSample = getSampleValueAt(sound, index)
@@ -335,7 +309,8 @@ def onlyMaximise(sound):
       setSampleValue(sample, 32767)
     if value < 0:
       setSampleValue(sample, -32767)
-      
+
+#merge two sounds together      
 def merge():
   bikeHorn = makeSound("Bikehorn.wav")
   bikeLength = getLength(bikeHorn)
@@ -366,17 +341,13 @@ def merge():
   play(target)
   return target
 
-
-
-#why does the pitch go up?
-def clipSound():
+#clip sound
+def clipSound(start, end):
   bikeHorn=makeSound("Bikehorn.wav")
   bikeLength=getLength(bikeHorn)
   explore(bikeHorn)    
   def clip(bikeHorn):
-  
-    start=4000
-    end= 14000
+    
     print "The start is", start
     print "The end is", end
     target = makeEmptySound(end - start)
@@ -391,19 +362,17 @@ def clipSound():
   explore(bikeClip)
 
 #copy the sound into an empty sound
-def copy(sound):  
-  target=makeEmptySoundBySeconds(9)
+def copy(target, sound, start):  
+  #target=makeEmptySoundBySeconds(seconds)
   #start point of the target to copy new sound into
-  start=4000
-  
   targetIndex=start
   for sourceIndex in range(0, getLength(sound)):
     sourceValue=getSampleValueAt(sound, sourceIndex)
     setSampleValueAt(target, targetIndex, sourceValue)
     targetIndex=targetIndex+1
-  play(target)
-  print "Did it play?"  
-  explore(target)
+  #play(target)
+  #print "Did it play?"  
+  #explore(target)
 
 #request file name and save location and save sound                
 def writeSound(sound):
