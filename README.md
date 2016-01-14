@@ -14,9 +14,7 @@ Combine to create gameplay audio
 Tone generation  
 Tone combination  
 Audio splice and swap  
-Audio envelopes and echoes 
-Random audio generation  
-
-##To do:
+Audio envelopes and echoes  
 Parsing tokens into audio  
-Combine  
+Random audio generation  
+Combine 
