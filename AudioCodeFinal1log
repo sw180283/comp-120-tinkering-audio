@@ -400,3 +400,29 @@
 <menu_button time="Sun Jan 17 00:04:04 GMT 2016">Load Program</menu_button>
 <file_saved time="Sun Jan 17 00:04:05 GMT 2016">C:\Users\home\Desktop\Sam\Falmouth\Final\comp-120-tinkering-audio\AudioCodeFinal1</file_saved>
 </file_created>
+<command_run time="Sun Jan 17 00:04:08 GMT 2016">parseToken()></command_run>
+<menu_button time="Sun Jan 17 00:05:28 GMT 2016">Program Area + Interactions Area</menu_button>
+<command_run time="Sun Jan 17 00:07:06 GMT 2016">parseToken()></command_run>
+<menu_button time="Sun Jan 17 00:34:01 GMT 2016">playNote</menu_button>
+<menu_button time="Sun Jan 17 00:45:28 GMT 2016">Program Area + Interactions Area</menu_button>
+<menu_button time="Sun Jan 17 00:47:49 GMT 2016">Load Program</menu_button>
+<file_saved time="Sun Jan 17 00:47:50 GMT 2016">C:\Users\home\Desktop\Sam\Falmouth\Final\comp-120-tinkering-audio\AudioCodeFinal1</file_saved>
+</file_created>
+<command_run time="Sun Jan 17 00:48:08 GMT 2016">sinWave(440, 4400, 4)></command_run>
+<command_run time="Sun Jan 17 00:48:14 GMT 2016">sineWave(440, 4400, 4)></command_run>
+<command_run time="Sun Jan 17 00:48:24 GMT 2016">sineWave(440, 4400, 40)></command_run>
+<menu_button time="Sun Jan 17 00:49:03 GMT 2016">Load Program</menu_button>
+<file_saved time="Sun Jan 17 00:49:04 GMT 2016">C:\Users\home\Desktop\Sam\Falmouth\Final\comp-120-tinkering-audio\AudioCodeFinal1</file_saved>
+</file_created>
+<command_run time="Sun Jan 17 00:49:09 GMT 2016">sineWave(440, 4400)></command_run>
+<menu_button time="Sun Jan 17 00:54:21 GMT 2016">Undo</menu_button>
+<menu_button time="Sun Jan 17 00:54:21 GMT 2016">Undo</menu_button>
+<menu_button time="Sun Jan 17 00:56:14 GMT 2016">Load Program</menu_button>
+<file_saved time="Sun Jan 17 00:56:15 GMT 2016">C:\Users\home\Desktop\Sam\Falmouth\Final\comp-120-tinkering-audio\AudioCodeFinal1</file_saved>
+</file_created>
+<command_run time="Sun Jan 17 00:56:32 GMT 2016">sound=makeSound(pickAFile())></command_run>
+<command_run time="Sun Jan 17 00:56:41 GMT 2016">secondSound=makeSound(pickAFile())></command_run>
+<command_run time="Sun Jan 17 00:57:00 GMT 2016">spliceSounds(sound, secondSound)></command_run>
+<menu_button time="Sun Jan 17 00:57:31 GMT 2016">Load Program</menu_button>
+<file_saved time="Sun Jan 17 00:57:32 GMT 2016">C:\Users\home\Desktop\Sam\Falmouth\Final\comp-120-tinkering-audio\AudioCodeFinal1</file_saved>
+</file_created>

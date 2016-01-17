@@ -52,7 +52,7 @@ def parseToken():
     
     newParse.append(note_number)
     print "This is the list of frequencies", newParse
-    newMelody = sineWave(frequency, 4000, 1)
+    newMelody = sineWave(frequency, 4000)
     
     #start point of the target to copy new sound into
     lengthMelody = getLength(buildSin)
@@ -67,15 +67,8 @@ def parseToken():
          
 
 #TONE GENERATION 1
-def sineWave(freq, amplitude, length):
-  
-  #set the variables
-  #freq=440
-  #amplitude=4400
-  #secs=4
-  
-  #create blank sound
-  #buildSin = makeEmptySoundBySeconds(length)
+#Example: sineWave(440, 4400)
+def sineWave(freq, amplitude):
   
   #set the constant of sampling
   samplingRate = getSamplingRate(buildSin)
@@ -177,21 +170,26 @@ def splice(start, end, secondStart, secondEnd, silence):
 
 #SPLICE AND SWAP 3
 #splice 1/2 of sound1 with 1/2 of sound2       
-def spliceSounds(sound1, sound2): 
-  target = makeEmptySoundBySeconds(9)  
+def spliceSounds(sound, secondSound, silence): 
+ 
+  soundLength = getLength(sound)/2 
+  secondSoundLength = getLength(secondSound)/2 
+  length = soundLength + secondSoundLength
+  print "This is the sound sample length", soundLength
+  target = makeEmptySound(length + silence)  
   targetIndex = 0
   
-  for sourceIndex in range(0, getLength(sound1)/2):
-    value = getSampleValueAt(sound1, sourceIndex)
+  for sourceIndex in range(0, getLength(sound)/2):
+    value = getSampleValueAt(sound, sourceIndex)
     setSampleValueAt(target, targetIndex, value)
     targetIndex = targetIndex + 1
     
-  for sourceIndex in range(getLength(sound2)/2, getLength(sound2)):
-    value = getSampleValueAt(sound2, sourceIndex)
+  for sourceIndex in range(getLength(secondSound)/2, getLength(secondSound)):
+    value = getSampleValueAt(secondSound, sourceIndex)
     setSampleValueAt(target, targetIndex, value)
     targetIndex = targetIndex + 1
     
-  for index in range(0, 1000):
+  for index in range(0, silence):
     setSampleValueAt(target, targetIndex, 0)
     targetIndex = targetIndex + 1  
     
