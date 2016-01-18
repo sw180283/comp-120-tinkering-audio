@@ -9,3 +9,14 @@ Parsing tokens into audio
 Random audio generation  
 Combine  
 Write gameplay audio out
+
+##Audio
+Royalty free music: http://incompetech.com/
+Airhorn.wav
+Bikehorn.wav
+Upbeat funk.wav
+
+Created from audio project:
+Gameplay_music.wav
+
+
