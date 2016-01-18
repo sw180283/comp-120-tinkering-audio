@@ -14,7 +14,7 @@ Write gameplay audio out
 Royalty free music: http://incompetech.com/  
 Airhorn.wav  
 Bikehorn.wav  
-Upbeat funk.wav  
+UpbeatFunk.wav
 
 Created from audio project:  
 Gameplay_music.wav
